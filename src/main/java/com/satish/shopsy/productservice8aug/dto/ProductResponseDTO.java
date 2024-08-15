@@ -1,19 +1,17 @@
-package com.satish.shopsy.productservice8aug.model;
+package com.satish.shopsy.productservice8aug.dto;
 
-
-import com.satish.shopsy.productservice8aug.dto.FakeStoreProductDTO;
+import com.satish.shopsy.productservice8aug.model.Category;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class Product {
+
+@Getter /*and*/ @Setter
+    public class ProductResponseDTO {
     private Integer Id;
     private String title;
     private String Description;
     private double price;
     public String imageURL;
     private Category category;
-
 
 }
