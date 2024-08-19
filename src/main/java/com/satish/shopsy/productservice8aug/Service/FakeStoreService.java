@@ -1,11 +1,14 @@
 package com.satish.shopsy.productservice8aug.Service;
 import com.satish.shopsy.productservice8aug.builder.ProductMapper;
 import com.satish.shopsy.productservice8aug.dto.FakeStoreProductDTO;
-//import com.satish.shopsy.productservice8aug.model.Category;
+import com.satish.shopsy.productservice8aug.model.Category;
 import com.satish.shopsy.productservice8aug.model.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // by this we are telling the spring that this class is a special class
 @Service
@@ -42,9 +45,8 @@ public class FakeStoreService implements ProductService {
                              FakeStoreProductDTO.class);
 
 
-         if(response.getBody()==null){
-          // throw exception
-           System.out.println("Product body is null");
+         if(response==null || response.getBody()==null){
+           return null;
          }
 
         // here the response body is provided by the getBody() method,
@@ -85,5 +87,23 @@ public class FakeStoreService implements ProductService {
         Product product =mapper.mapToProduct(response);
 
         return product;
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+       ResponseEntity<FakeStoreProductDTO[]> responseEntity =restTemplate.getForEntity
+
+               ("https://fakestoreapi.com/products",FakeStoreProductDTO[].class);
+
+       FakeStoreProductDTO[] dtos = responseEntity.getBody();
+       if(dtos==null || dtos.length==0){
+           System.out.println("Something went wrong...No response from the server");
+           new ArrayList<>();
+       }
+        for(int i=0;i<dtos.length;i++){
+            products.add(mapper.mapToProduct(dtos[i]));
+        }
+       return products ;
     }
 }

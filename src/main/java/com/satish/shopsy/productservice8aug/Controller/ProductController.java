@@ -6,8 +6,16 @@ import com.satish.shopsy.productservice8aug.builder.ProductMapper;
 import com.satish.shopsy.productservice8aug.dto.FakeStoreProductDTO;
 import com.satish.shopsy.productservice8aug.dto.ProductResponseDTO;
 import com.satish.shopsy.productservice8aug.dto.createProductRequestDTO;
+import com.satish.shopsy.productservice8aug.dto.errorDTO;
+import com.satish.shopsy.productservice8aug.exceptions.InvalidProductIdException;
+import com.satish.shopsy.productservice8aug.exceptions.ProductNotFoundException;
 import com.satish.shopsy.productservice8aug.model.Product;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class ProductController {
@@ -42,33 +50,43 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public void getProductAllProducts(){
-        // I will implement this today
+    public List<ProductResponseDTO> getProductAllProducts(){
 
+        System.out.println("getting the entire list of the products at FakeStoreAPI.com");
+        List<ProductResponseDTO> productResponseDTOList = new ArrayList<>();
+
+           List<Product> productList= svc.getAllProducts();
+           if(productList==null || productList.isEmpty()){
+               return null;
+           }
+           for(int i=0;i<productList.size();i++){
+                productResponseDTOList.add(mapper.convertToProductResponseDTO(productList.get(i)));
+           }
+           return productResponseDTOList;
     }
 
 
     @GetMapping("/product/{id}")
-    public  ProductResponseDTO getProductByID(@PathVariable("id") Long id){
+    public  ProductResponseDTO getProductByID (@PathVariable("id") Long id)
+            throws InvalidProductIdException, ProductNotFoundException {
 
-       valiDateRequestParam(id);
+        if(id==null){
+            throw  new InvalidProductIdException("Please enter a valid product ID");
+        }
 
         //1.calling to the service layer
         //pass the id of the product
         Product product = svc.getProductById(id);
-
+        if(product==null){
+           throw new ProductNotFoundException();
+        }
         //map to the responseDTO
         ProductResponseDTO response= mapper.convertToProductResponseDTO(product);
 
         return response;
     }
 
-    private void valiDateRequestParam(Long id) {
-        //validations
-        if(id==null){
-            //throw an exception
-        }
-    }
+
 
     //we will do the conversion of model to DTO here
 
@@ -77,4 +95,6 @@ public class ProductController {
     public void deleteProductById(@PathVariable("id") Long id){
     // pass the oid of the product which is to be deleted
     }
+
+
 }
