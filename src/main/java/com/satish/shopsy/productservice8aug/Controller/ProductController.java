@@ -2,8 +2,10 @@ package com.satish.shopsy.productservice8aug.Controller;
 
 import com.satish.shopsy.productservice8aug.Service.FakeStoreService;
 import com.satish.shopsy.productservice8aug.Service.ProductService;
+import com.satish.shopsy.productservice8aug.builder.ProductMapper;
 import com.satish.shopsy.productservice8aug.dto.FakeStoreProductDTO;
 import com.satish.shopsy.productservice8aug.dto.ProductResponseDTO;
+import com.satish.shopsy.productservice8aug.dto.createProductRequestDTO;
 import com.satish.shopsy.productservice8aug.model.Product;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,26 +13,32 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private ProductService svc;
+    private ProductMapper mapper;
+    private createProductRequestDTO dto;
 
     // injeting ProductService in ProductContoller
     //ProductService svc = new FakeStoreSevice();  and
     // ProductController bj = new ProductController(svc);
 
-    public ProductController(ProductService svc) {
+    public ProductController(ProductService svc,ProductMapper mapper) {
         this.svc=svc;
+        this.mapper=mapper;
     }
 
     @PostMapping("/product")
-    public ProductResponseDTO createProduct(@RequestBody FakeStoreProductDTO dto){
+    public ProductResponseDTO createProduct(@RequestBody createProductRequestDTO dto){
+
+
         //call this method
         // call the service layer
+        Product productResp= svc.createProduct(dto.getTitle(),dto.getPrice(),dto.getCategory(),
+                                dto.getDescription(), dto.getImage());
 
 
 
       //convert this to DTO and return
 
-
-        return null;
+        return mapper.convertToProductResponseDTO(productResp);
     }
 
     @GetMapping("/products")
@@ -50,7 +58,7 @@ public class ProductController {
         Product product = svc.getProductById(id);
 
         //map to the responseDTO
-        ProductResponseDTO response= convertToProductResponseDTO(product);
+        ProductResponseDTO response= mapper.convertToProductResponseDTO(product);
 
         return response;
     }
@@ -64,19 +72,7 @@ public class ProductController {
 
     //we will do the conversion of model to DTO here
 
-    private ProductResponseDTO convertToProductResponseDTO(Product product){
-        ProductResponseDTO dto= new ProductResponseDTO();
-        dto.setCategory(product.getCategory());
-        dto.setDescription(product.getDescription());
-        dto.setId(product.getId());
-        dto.setTitle(product.getTitle());
-        dto.setPrice(product.getPrice());
 
-        if(product.getId()!=null){
-            dto.setId(product.getId());
-        }
-        return dto;
-    }
     @DeleteMapping("product/{id}")
     public void deleteProductById(@PathVariable("id") Long id){
     // pass the oid of the product which is to be deleted

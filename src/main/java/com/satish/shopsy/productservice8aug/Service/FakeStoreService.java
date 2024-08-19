@@ -1,8 +1,7 @@
 package com.satish.shopsy.productservice8aug.Service;
-
-
+import com.satish.shopsy.productservice8aug.builder.ProductMapper;
 import com.satish.shopsy.productservice8aug.dto.FakeStoreProductDTO;
-import com.satish.shopsy.productservice8aug.model.Category;
+//import com.satish.shopsy.productservice8aug.model.Category;
 import com.satish.shopsy.productservice8aug.model.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,9 +15,11 @@ public class FakeStoreService implements ProductService {
     //RestTemplate is  a library that is used to call another server to get its response
 
     private RestTemplate restTemplate;
+    private ProductMapper mapper;
 
-    public FakeStoreService(RestTemplate restTemplate) {
+    public FakeStoreService(RestTemplate restTemplate,ProductMapper mapper) {
         this.restTemplate = restTemplate;
+        this.mapper=mapper;
     }
 
 
@@ -32,58 +33,57 @@ public class FakeStoreService implements ProductService {
     @Override
     public Product getProductById(Long id){
 
-        System.out.println("I am inside the Productservice and calling the fakestore");
+        System.out.println("I am inside the FakeStoreService and calling the Fakestore DB");
 
         //  first: call the API and then the response is converted into a DTO object
-      ResponseEntity<FakeStoreProductDTO> response= restTemplate.
-              getForEntity("https://fakestoreapi.com/products/" + id,
-                      FakeStoreProductDTO.class);
+         ResponseEntity<FakeStoreProductDTO> response= restTemplate.
+                             getForEntity(
+                        "https://fakestoreapi.com/products/" + id,
+                             FakeStoreProductDTO.class);
 
-      if(response.getBody()==null){
+
+         if(response.getBody()==null){
           // throw exception
-          System.out.println("Product body is null");
-      }
+           System.out.println("Product body is null");
+         }
 
         // here the response body is provided by the getBody() method,
         // which gives a plain text/html content
 
-      FakeStoreProductDTO fakeStoreProductDTO = response.getBody();
+        FakeStoreProductDTO fakeStoreProductDTO = response.getBody();
 
         // assert dto != null;
+
         //finally we are returning model from the service
 
-        return maptoProduct(fakeStoreProductDTO);
+         return mapper.mapToProduct(fakeStoreProductDTO);
     }
 
 
-    //here in the service we are doing the mapping of the  dto => model, Product=model
 
-    private Product maptoProduct(FakeStoreProductDTO dto) {
-        Product product = new Product();
-        Category category = new Category();
-        category.setTitle(dto.getCategory().getTitle());// only for the category
-        category.setId(dto.getCategory().getId());
 
-        product.setCategory(category);// using the category here
-        product.setTitle(dto.getTitle());
-        product.setId(dto.getId());
-        product.setDescription(dto.getDescription());
-        product.setPrice(Double.parseDouble(dto.getPrice()));
-        product.setImageURL(dto.getImages().get(0));
 
-        return product;
-    }
+
 
     @Override
-    public Product createProduct(String title,String description,
-                              String price,String category,String image) {
-
+    public Product createProduct(String title,String price, String category,String description,
+                             String image) {
+            System.out.println("okay yes here we are , ready to create");
         //1. call the fakestore api
         FakeStoreProductDTO requestBody = new FakeStoreProductDTO();
+        requestBody.setTitle(title);
+        requestBody.setPrice(String.valueOf(price));
+        requestBody.setCategory(category);
+        requestBody.setDescription(description);
 
 
-        restTemplate.postForObject("",requestBody,FakeStoreProductDTO.class);
 
-        return null;
+        FakeStoreProductDTO response = restTemplate.postForObject("https://fakestoreapi.com/products",
+                                        requestBody,
+                                        FakeStoreProductDTO.class);
+
+        Product product =mapper.mapToProduct(response);
+
+        return product;
     }
 }

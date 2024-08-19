@@ -9,9 +9,10 @@ import lombok.Setter;
     public class ProductResponseDTO {
     private Integer Id;
     private String title;
-    private String Description;
     private double price;
-    public String imageURL;
     private Category category;
+    private String Description;
+    public String imageURL;
+
 
 }
