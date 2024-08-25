@@ -10,6 +10,7 @@ import com.satish.shopsy.productservice8aug.dto.errorDTO;
 import com.satish.shopsy.productservice8aug.exceptions.InvalidProductIdException;
 import com.satish.shopsy.productservice8aug.exceptions.ProductNotFoundException;
 import com.satish.shopsy.productservice8aug.model.Product;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class ProductController {
     //ProductService svc = new FakeStoreSevice();  and
     // ProductController bj = new ProductController(svc);
 
-    public ProductController(ProductService svc,ProductMapper mapper) {
+    public ProductController(@Qualifier("SelfProductService") ProductService svc, ProductMapper mapper) {
         this.svc=svc;
         this.mapper=mapper;
     }
@@ -52,7 +53,9 @@ public class ProductController {
     @GetMapping("/products")
     public List<ProductResponseDTO> getProductAllProducts(){
 
-        System.out.println("getting the entire list of the products at FakeStoreAPI.com");
+        //System.out.println("getting the entire list of the products at FakeStoreAPI.com");
+
+        System.out.println("getting the entire list of the products from my Database");
         List<ProductResponseDTO> productResponseDTOList = new ArrayList<>();
 
            List<Product> productList= svc.getAllProducts();
@@ -67,7 +70,7 @@ public class ProductController {
 
 
     @GetMapping("/product/{id}")
-    public  ProductResponseDTO getProductByID (@PathVariable("id") Long id)
+    public  ProductResponseDTO getProductByID (@PathVariable("id") Integer id)
             throws InvalidProductIdException, ProductNotFoundException {
 
         if(id==null){

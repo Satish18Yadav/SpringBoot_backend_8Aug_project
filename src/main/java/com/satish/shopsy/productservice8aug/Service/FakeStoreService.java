@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // by this we are telling the spring that this class is a special class
-@Service
+@Service("FakeStoreService")
 public class FakeStoreService implements ProductService {
 
 
@@ -34,7 +34,7 @@ public class FakeStoreService implements ProductService {
 
 
     @Override
-    public Product getProductById(Long id){
+    public Product getProductById(Integer id){
 
         System.out.println("I am inside the FakeStoreService and calling the Fakestore DB");
 

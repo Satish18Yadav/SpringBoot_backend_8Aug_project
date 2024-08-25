@@ -16,11 +16,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Product extends  BaseModel implements Serializable {
 
-    private Integer Id;
+  //  private Integer Id;
 
     private String title;
     private double price;
-    @ManyToOne(cascade={CascadeType.PERSIST})
+
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     private Category category;
     private String Description;
 

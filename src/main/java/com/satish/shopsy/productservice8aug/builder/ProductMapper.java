@@ -17,7 +17,7 @@ public class ProductMapper {
         dto.setDescription(product.getDescription());
         dto.setCategory(product.getCategory());
         dto.setTitle(product.getTitle());
-
+        dto.setImageURL(product.getImageURL());
         if(product.getId()==null){
             dto.setId(product.getId());
         }
