@@ -4,6 +4,9 @@ import com.satish.shopsy.productservice8aug.model.Category;
 import com.satish.shopsy.productservice8aug.model.Product;
 import com.satish.shopsy.productservice8aug.repository.CategoryRepo;
 import com.satish.shopsy.productservice8aug.repository.ProductRepo;
+import com.satish.shopsy.productservice8aug.repository.projection.productProjection;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -55,4 +58,16 @@ public class SelfProductService implements ProductService{
         List<Product> prods = productrepo.findAll();
         return prods;
     }
+
+
+    //HQL query
+
+   public Product getProductByIdAndTitle(Integer Id, String title){
+      Product product= productrepo.getProductFromIdAndTitle(Id,title);
+
+      productProjection productprojection = productrepo.getTitleAndPriceFromProductId(Id);
+
+      return product;
+   }
+
 }

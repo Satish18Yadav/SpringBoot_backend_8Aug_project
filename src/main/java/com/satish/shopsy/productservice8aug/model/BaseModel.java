@@ -16,7 +16,7 @@ import java.util.Date;
 public class BaseModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer Id;
+    private Integer id;
     private Date createdAt;
     private Date updatedAt;
     private boolean isDeleted;

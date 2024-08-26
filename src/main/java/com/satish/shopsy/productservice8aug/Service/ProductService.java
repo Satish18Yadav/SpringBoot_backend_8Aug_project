@@ -16,5 +16,8 @@ public interface ProductService {
                                  String image);
 
     public List<Product> getAllProducts();
+
+    Product getProductByIdAndTitle(Integer id, String title);
+
 }
 

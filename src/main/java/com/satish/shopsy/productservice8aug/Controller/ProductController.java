@@ -89,8 +89,18 @@ public class ProductController {
         return response;
     }
 
+    @GetMapping("/product/{id}/{title}")
+        public ProductResponseDTO getProductusingIdAndTitle(@PathVariable("id") Integer id,
+                                                         @PathVariable("title") String title)
+                                                            throws ProductNotFoundException {
 
+         if(id==null){
+            throw new ProductNotFoundException("Give the ID");
+            }
+         Product product = svc.getProductByIdAndTitle(id,title);
 
+         return mapper.convertToProductResponseDTO(product);
+        }
     //we will do the conversion of model to DTO here
 
 
