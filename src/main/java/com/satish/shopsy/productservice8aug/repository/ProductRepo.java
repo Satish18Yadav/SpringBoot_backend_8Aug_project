@@ -12,29 +12,33 @@ import java.util.List;
 
 public interface ProductRepo extends JpaRepository<Product,Integer> {
 
-   List<Product> findAll();
+ List<Product> findAll();
 //    List<Product> findByCategory(Category category);
 
 
-    Product findProductById(Integer id);
-    //Product findProductByDescription(String description);
+ Product findProductById(Integer id);
+ //Product findProductByDescription(String description);
 
-    //create a Product
-    Product save(Product p);
+ //create a Product
+ Product save(Product p);
 
-    //Let's write a HQL query
-    @Query("select p from Product  p where p.Id= :Id and p.title= :title")
-    Product getProductFromIdAndTitle(@Param("Id") Integer Id, @Param("title") String title);
+ //Let's write a HQL query
+ @Query("select p from Product  p where p.Id= :Id and p.title= :title")
+ Product getProductFromIdAndTitle(@Param("Id") Integer Id, @Param("title") String title);
 
 
-    /*
-    Get title and ID
-    return something which is called as Projection
-    */
-    @Query("select p.Id,p.title,p.price from Product p where p.Id= :Id")
-    productProjection getTitleAndPriceFromProductId(@Param("Id") Integer Id);
+ /*
+ Get title and ID
+ return something which is called as Projection
+ */
+// @Query("select p.Id,p.title,p.price from Product p where p.Id= :Id")
+// productProjection getTitleAndPriceFromProductId(@Param("Id") Integer Id);
 
-    @Query("select p.id as id,p.price as price from Product p where p.title= :title")
-    List<productProjection> getIdAndPriceFromProductTitle(@Param("title") String title);
+ // using the native query
+ @Query(value = "SELECT Id, title, price FROM Product WHERE Id = :Id", nativeQuery = true)
+ productProjection getTitleAndPriceFromProductId(@Param("Id") Integer Id);
+
+
+ @Query("select p.id as id,p.price as price from Product p where p.title= ?1")
+ List<productProjection> getIdAndPriceFromProductTitle( String title);
 }
-

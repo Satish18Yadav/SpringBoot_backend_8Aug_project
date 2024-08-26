@@ -25,8 +25,19 @@ class ProductService8AugApplicationTests {
     void contextLoads() {
 
         List<productProjection> pros = productRepo.getIdAndPriceFromProductTitle("Mototrocatane");
+        System.out.println(pros.size());
         System.out.println(pros.get(0).getId());
         System.out.println(pros.get(0).getPrice());
+
+
+        System.out.println();
+        System.out.println("using the native query");
+
+        productProjection simply = productRepo.getTitleAndPriceFromProductId(52);
+        System.out.println(simply.getId());
+        System.out.println(simply.getTitle());
+        System.out.println(simply.getPrice());
+        System.out.println("done using the native query");
     }
 
 }
