@@ -22,7 +22,7 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
  //create a Product
  Product save(Product p);
 
- //Let's write a HQL query
+ //Let's write an HQL query
  @Query("select p from Product  p where p.Id= :Id and p.title= :title")
  Product getProductFromIdAndTitle(@Param("Id") Integer Id, @Param("title") String title);
 

@@ -2,9 +2,7 @@ package com.satish.shopsy.productservice8aug.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +17,6 @@ public class Category extends BaseModel {
 
     private  String title;
     @JsonIgnore
-    @OneToMany(mappedBy="category")
+    @OneToMany(mappedBy="category",fetch= FetchType.LAZY,cascade={CascadeType.REMOVE})
     List<Product> products;
 }

@@ -38,6 +38,15 @@ class ProductService8AugApplicationTests {
         System.out.println(simply.getTitle());
         System.out.println(simply.getPrice());
         System.out.println("done using the native query");
+
+        System.out.println("*******************************************");
+        System.out.println("Checking about the fetch types Lazy and Eager");
+
+        Category cat = categoryRepo.findByTitle("Luxury Sedans");
+        System.out.println(cat);
+        System.out.println(cat.getProducts());
+        System.out.println("*******************************************");
+
     }
 
 }
