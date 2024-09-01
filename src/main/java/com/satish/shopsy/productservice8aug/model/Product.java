@@ -27,4 +27,6 @@ public class Product extends  BaseModel implements Serializable {
 
     public String imageURL;
 
+    private String product_address;
+
 }
