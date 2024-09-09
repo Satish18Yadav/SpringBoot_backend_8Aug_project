@@ -10,6 +10,7 @@
     </parent>
     <groupId>com.Satish.shopsy</groupId>
     <artifactId>ProductService8Aug</artifactId>
+    <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>ProductService8Aug</name>
     <description>ProductService8Aug</description>
