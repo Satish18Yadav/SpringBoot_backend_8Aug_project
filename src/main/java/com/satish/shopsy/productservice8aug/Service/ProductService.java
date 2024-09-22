@@ -1,6 +1,7 @@
 package com.satish.shopsy.productservice8aug.Service;
 
 import com.satish.shopsy.productservice8aug.model.Product;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface ProductService {
     public List<Product> getAllProducts();
 
     Product getProductByIdAndTitle(Integer id, String title);
+
+    public Page<Product> getPaginatedProducts(int pageNo, int pageSize);
 
 }
 

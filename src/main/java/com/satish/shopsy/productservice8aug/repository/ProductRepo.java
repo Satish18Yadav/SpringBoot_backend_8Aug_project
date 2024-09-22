@@ -3,6 +3,8 @@ package com.satish.shopsy.productservice8aug.repository;
 import com.satish.shopsy.productservice8aug.model.Category;
 import com.satish.shopsy.productservice8aug.model.Product;
 import com.satish.shopsy.productservice8aug.repository.projection.productProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +14,7 @@ import java.util.List;
 
 public interface ProductRepo extends JpaRepository<Product,Integer> {
 
- List<Product> findAll();
+     List<Product> findAll();
 //    List<Product> findByCategory(Category category);
 
 
@@ -41,4 +43,14 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
 
  @Query("select p.id as id,p.price as price from Product p where p.title= ?1")
  List<productProjection> getIdAndPriceFromProductTitle( String title);
+
+ /*
+ * create your own query HQL query which supports pagination
+ *
+ * For now use an existing library for your purpose
+ *
+ * */
+
+// @Override
+// Page<Product> findAll(Pageable pageable);
 }

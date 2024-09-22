@@ -5,6 +5,10 @@ import com.satish.shopsy.productservice8aug.model.Product;
 import com.satish.shopsy.productservice8aug.repository.CategoryRepo;
 import com.satish.shopsy.productservice8aug.repository.ProductRepo;
 import com.satish.shopsy.productservice8aug.repository.projection.productProjection;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -69,5 +73,18 @@ public class SelfProductService implements ProductService{
 
       return product;
    }
+
+    public Page<Product> getPaginatedProducts(int page, int size) {
+        // findAll(Pageable pageable);
+
+        Page<Product> productPage = productrepo.findAll(PageRequest.of(page,size));
+        // Page T
+//        productPage.getTotalElements();
+//        productPage.get();
+//        productPage.getTotalPages();
+//        List<Product> products =productPage.getContent();
+
+        return productPage;
+    }
 
 }

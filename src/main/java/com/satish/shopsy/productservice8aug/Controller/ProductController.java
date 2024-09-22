@@ -11,12 +11,15 @@ import com.satish.shopsy.productservice8aug.exceptions.InvalidProductIdException
 import com.satish.shopsy.productservice8aug.exceptions.ProductNotFoundException;
 import com.satish.shopsy.productservice8aug.model.Product;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProductController {
@@ -109,5 +112,23 @@ public class ProductController {
     // pass the oid of the product which is to be deleted
     }
 
+    // Pagination and Sorting for the contents received from the database
+        @GetMapping("pagination/{page}/{pagesize}")
+    public ResponseEntity<Map<String, Object>> getPaginatedProduct(@PathVariable("page") Integer page,
+                                               @PathVariable("pagesize") Integer pagesize ){
+        if(pagesize < 5){
+            pagesize=10;
+        }
+            Page<Product> productPage = svc.getPaginatedProducts(page, pagesize);
+            List<Product> products = productPage.getContent();
 
+            // Building the response with pagination details
+            Map<String, Object> response = new HashMap<>();
+            response.put("products", products);
+            response.put("currentPage", productPage.getNumber());
+            response.put("totalItems", productPage.getTotalElements());
+            response.put("totalPages", productPage.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

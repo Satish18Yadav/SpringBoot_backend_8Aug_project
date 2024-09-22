@@ -3,6 +3,7 @@ import com.satish.shopsy.productservice8aug.builder.ProductMapper;
 import com.satish.shopsy.productservice8aug.dto.FakeStoreProductDTO;
 import com.satish.shopsy.productservice8aug.model.Category;
 import com.satish.shopsy.productservice8aug.model.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,11 +21,15 @@ public class FakeStoreService implements ProductService {
     private RestTemplate restTemplate;
     private ProductMapper mapper;
 
+
     public FakeStoreService(RestTemplate restTemplate,ProductMapper mapper) {
         this.restTemplate = restTemplate;
         this.mapper=mapper;
     }
 
+    public Page<Product> getPaginatedProducts(int page, int size) {
+       return null;
+    }
 
 
     /* 1. call the fakestore and return the response of the fakestore*/

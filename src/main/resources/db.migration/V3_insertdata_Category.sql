@@ -1,9 +1,3 @@
-
-
-
-alter table Product add  column product_address varchar(255);
-
-
 -- V2__insert_data.sql
 -- Insert data into category
 INSERT INTO category (created_at, updated_at, is_deleted, title)
