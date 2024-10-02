@@ -22,5 +22,7 @@ public interface ProductService {
 
     public Page<Product> getPaginatedProducts(int pageNo, int pageSize);
 
+    public  Page<Product> getPageBySequence(int pageNo,int pageSize,String sequence);
+
 }
 

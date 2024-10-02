@@ -9,6 +9,7 @@ import com.satish.shopsy.productservice8aug.repository.projection.productProject
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -83,8 +84,14 @@ public class SelfProductService implements ProductService{
 //        productPage.get();
 //        productPage.getTotalPages();
 //        List<Product> products =productPage.getContent();
-
         return productPage;
     }
 
+    public Page<Product> getPageBySequence(int page, int size,String sortBy) {
+
+       Page<Product> pageOfProduct = productrepo.findAll(PageRequest.of(page,size,
+                                        Sort.Direction.ASC,sortBy));
+
+       return pageOfProduct;
+    }
 }

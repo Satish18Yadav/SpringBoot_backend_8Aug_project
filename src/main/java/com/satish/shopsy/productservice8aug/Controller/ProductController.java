@@ -116,9 +116,7 @@ public class ProductController {
         @GetMapping("pagination/{page}/{pagesize}")
     public ResponseEntity<Map<String, Object>> getPaginatedProduct(@PathVariable("page") Integer page,
                                                @PathVariable("pagesize") Integer pagesize ){
-        if(pagesize < 5){
-            pagesize=10;
-        }
+
             Page<Product> productPage = svc.getPaginatedProducts(page, pagesize);
             List<Product> products = productPage.getContent();
 
@@ -128,7 +126,17 @@ public class ProductController {
             response.put("currentPage", productPage.getNumber());
             response.put("totalItems", productPage.getTotalElements());
             response.put("totalPages", productPage.getTotalPages());
-
             return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("pageBySequence/{page}/{pagesize},{sortBy}")
+
+    public ResponseEntity<List<Product>> pageBySequence(@PathVariable("page") Integer page,
+                                                        @PathVariable ("pagesize") Integer pagesize
+                                                        ,@PathVariable("sortBy") String sortBy){
+
+        Page<Product> response =  svc.getPageBySequence(page,pagesize,sortBy);
+
+        return new ResponseEntity<>(response.getContent(), HttpStatus.OK);
     }
 }
